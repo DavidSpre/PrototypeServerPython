@@ -1,4 +1,3 @@
-from typing import override
 
 from sqlalchemy import ForeignKey, Identity
 from sqlalchemy.orm import Mapped, mapped_column, relationship

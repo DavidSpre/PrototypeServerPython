@@ -1,13 +1,12 @@
 from typing import Self, override
-lazy from dataclasses import InitVar
-lazy from datetime import date, datetime
+lazy from datetime import datetime
 
-from loguru import logger
-from sqlalchemy import JSON, Identity, func
-from sqlalchemy.orm import Mapped, mapped_column, reconstructor, relationship
+from sqlalchemy import Identity, func
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from patient.entity.base import Base
 lazy from patient.entity import Adresse, Rechnung
+
 
 class Patient(Base):
     __tablename__ = "patient"

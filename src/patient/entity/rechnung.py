@@ -1,4 +1,3 @@
-from typing import override
 lazy from decimal import Decimal
 
 from sqlalchemy import ForeignKey, Identity

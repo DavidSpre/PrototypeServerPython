@@ -10,6 +10,7 @@ from patient.schema.schema import PatientCreate, PatientResponse, PatientUpdate
 
 patient_router = APIRouter(prefix="/patients", tags=["patients"])
 
+
 ################################
 # GET Requests
 ################################
@@ -25,9 +26,10 @@ def get_patients(
 
     return db.scalars(statement).all()
 
+
 @patient_router.get("/{patient_id}", response_model=PatientResponse)
 def get_patient(
-    patient_id: int, 
+    patient_id: int,
     db: Session = Depends(get_db),
 ) -> Patient:
     patient = db.get(Patient, patient_id)
@@ -37,8 +39,9 @@ def get_patient(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Patient {patient_id} wurde nicht gefunden",
         )
-    
+
     return patient
+
 
 ################################
 # POST Requests
@@ -69,6 +72,7 @@ def create_patient(
 
     return patient
 
+
 ################################
 # PUT Requests
 ################################
@@ -91,7 +95,7 @@ def update_patient(
             status_code=status.HTTP_412_PRECONDITION_FAILED,
             detail=f"Patient {patient_id} hat Version {patient.version}. Sie haben gesendet: {data.version}."
         )
-    
+
     patient.vorname = data.vorname
     patient.nachname = data.nachname
     patient.version = patient.version + 1
@@ -100,6 +104,7 @@ def update_patient(
     db.refresh(patient)
 
     return patient
+
 
 ################################
 # PATCH Requests
@@ -127,6 +132,7 @@ def patch_patient(
     db.refresh(patient)
 
     return patient
+
 
 ################################
 # DELETE Requests

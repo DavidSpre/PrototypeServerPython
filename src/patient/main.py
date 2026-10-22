@@ -4,10 +4,12 @@ from fastapi import FastAPI
 
 from patient.database import create_tables
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     create_tables()
     yield
+
 
 app = FastAPI(
     title="Patient API",
@@ -18,6 +20,7 @@ app = FastAPI(
 from patient.router.patient_router import patient_router
 
 app.include_router(patient_router)
+
 
 @app.get("/health", tags=["health"])
 def health() -> dict[str, str]:
