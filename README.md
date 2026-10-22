@@ -25,3 +25,13 @@ Repository for the prototype-server using Python, FastAPI, and PostgreSQL. Part 
 - "Testen": GET und POST
   - [ ] Bruno/Postman/Thunder Client *oder*
   - [ ] pytest (Integrationstests genügen)
+
+## Aufsetzen
+
+- Datenbank wie in der vorgegebenen [Anleitung](./extras/compose/postgres/ReadMe.md) beschrieben aufsetzen
+- Datenbank starten per Docker: `docker compose -f ./extras/compose/postgres/compose.yml exec postgres psql --dbname=patient --username=postgres`
+  - Password: `p`
+- Server starten: `uv run fastapi dev`
+- Per Bruno testen: `GET`, `POST`, `PUT`, `PATCH`, `DELETE` Requests an `http://localhost:8000/patients`
+- Pyrefly ausführen: `uv run pyrefly check`
+- ruff ausführen: `uv run ruff check .`
