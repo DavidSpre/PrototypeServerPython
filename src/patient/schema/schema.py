@@ -8,7 +8,9 @@ class PatientBase(BaseModel):
     nachname: str
 
 class PatientCreate(PatientBase):
-    pass
+    vorname: str
+    nachname: str
+    version: int | None = None
 
 class PatientUpdate(BaseModel):
     vorname: str | None = None
