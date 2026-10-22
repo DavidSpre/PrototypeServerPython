@@ -19,6 +19,7 @@ class Patient(Base):
     id: Mapped[int | None] = mapped_column(
         Identity(start=1000),
         primary_key=True,
+        nullable=False,
     )
 
     adresse: Mapped[Adresse | None] = relationship(

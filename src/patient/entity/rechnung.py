@@ -22,6 +22,7 @@ class Rechnung(Base):
     id: Mapped[int | None] = mapped_column(
         Identity(start=1000),
         primary_key=True,
+        nullable=False,
     )
 
     patient_id: Mapped[int | None] = mapped_column(ForeignKey("patient.id"))
