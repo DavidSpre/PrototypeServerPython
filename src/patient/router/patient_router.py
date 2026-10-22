@@ -1,8 +1,9 @@
-from collections.abc import Sequence
+from typing import Annotated
+lazy from collections.abc import Sequence
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+lazy from sqlalchemy.orm import Session
 
 from patient.database.database import get_db
 from patient.entity import Patient
@@ -30,7 +31,7 @@ def get_patients(
 @patient_router.get("/{patient_id}", response_model=PatientResponse)
 def get_patient(
     patient_id: int,
-    db: Session = Depends(get_db),
+    db: Annotated[Session, Depends(get_db)],
 ) -> Patient:
     patient = db.get(Patient, patient_id)
 
@@ -53,7 +54,7 @@ def get_patient(
 )
 def create_patient(
     data: PatientCreate,
-    db: Session = Depends(get_db),
+    db: Annotated[Session, Depends(get_db)],
 ) -> Patient:
     patient = Patient(
         vorname=data.vorname,
@@ -80,7 +81,7 @@ def create_patient(
 def update_patient(
     patient_id: int,
     data: PatientCreate,
-    db: Session = Depends(get_db),
+    db: Annotated[Session, Depends(get_db)],
 ) -> Patient:
     patient = db.get(Patient, patient_id)
 
@@ -98,7 +99,7 @@ def update_patient(
 
     patient.vorname = data.vorname
     patient.nachname = data.nachname
-    patient.version = patient.version + 1
+    patient.version += 1
 
     db.commit()
     db.refresh(patient)
@@ -113,7 +114,7 @@ def update_patient(
 def patch_patient(
     patient_id: int,
     data: PatientUpdate,
-    db: Session = Depends(get_db),
+    db: Annotated[Session, Depends(get_db)],
 ) -> Patient:
     patient = db.get(Patient, patient_id)
 
@@ -140,7 +141,7 @@ def patch_patient(
 @patient_router.delete("/{patient_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_patient(
     patient_id: int,
-    db: Session = Depends(get_db),
+    db: Annotated[Session, Depends(get_db)],
 ) -> None:
     patient = db.get(Patient, patient_id)
 
