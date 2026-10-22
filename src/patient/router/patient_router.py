@@ -14,8 +14,15 @@ patient_router = APIRouter(prefix="/patients", tags=["patients"])
 # GET Requests
 ################################
 @patient_router.get("", response_model=list[PatientResponse])
-def get_patients(db: Session = Depends(get_db)) -> Sequence[Patient]:
+def get_patients(
+    nachname: str | None = None,
+    db: Session = Depends(get_db),
+) -> Sequence[Patient]:
     statement = select(Patient).order_by(Patient.id)
+
+    if nachname is not None:
+        statement = statement.where(Patient.nachname == nachname)
+
     return db.scalars(statement).all()
 
 @patient_router.get("/{patient_id}", response_model=PatientResponse)
@@ -78,6 +85,13 @@ def update_patient(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Patient {patient_id} wurde nicht gefunden."
         )
+
+    if data.version is not patient.version:
+        raise HTTPException(
+            status_code=status.HTTP_412_PRECONDITION_FAILED,
+            detail=f"Patient {patient_id} hat Version {patient.version}. Sie haben gesendet: {data.version}."
+        )
+    
     patient.vorname = data.vorname
     patient.nachname = data.nachname
     patient.version = patient.version + 1
@@ -105,12 +119,6 @@ def patch_patient(
         )
 
     changes = data.model_dump(exclude_unset=True)
-
-    if "email" in changes and changes["email"] is not None:
-        changes["email"] = str(changes["email"])
-
-    if "homepage" in changes and changes["homepage"] is not None:
-        changes["homepage"] = str(changes["homepage"])
 
     for field, value in changes.items():
         setattr(patient, field, value)
