@@ -7,8 +7,7 @@ from sqlalchemy import JSON, Identity, func
 from sqlalchemy.orm import Mapped, mapped_column, reconstructor, relationship
 
 from patient.entity.base import Base
-lazy from patient.entity.adresse import Adresse
-lazy from patient.entity.rechnung import Rechnung
+lazy from patient.entity import Adresse, Rechnung
 
 class Patient(Base):
     __tablename__ = "patient"
@@ -58,11 +57,8 @@ class Patient(Base):
 
         :param patient: Patient-Objekt mit den aktuellen Daten
         """
+        self.vorname = patient.vorname
         self.nachname = patient.nachname
-        self.email = patient.email
-        self.kategorie = patient.kategorie
-        self.has_newsletter = patient.has_newsletter
-        self.geburtsdatum = patient.geburtsdatum
 
     @override
     def __eq__(self, other: object) -> bool:
