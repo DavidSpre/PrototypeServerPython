@@ -29,8 +29,7 @@ Repository for the prototype-server using Python, FastAPI, and PostgreSQL. Part 
 ## Aufsetzen
 
 - Datenbank wie in der vorgegebenen [Anleitung](./extras/compose/postgres/ReadMe.md) beschrieben aufsetzen
-- Datenbank starten per Docker: `docker compose -f ./extras/compose/postgres/compose.yml exec postgres psql --dbname=patient --username=postgres`
-  - Password: `p`
+- Datenbank starten per Docker: `docker compose -f ./extras/compose/postgres/compose.yml up`
 - Server starten: `uv run fastapi dev`
 - Per Bruno testen: `GET`, `POST`, `PUT`, `PATCH`, `DELETE` Requests an `http://localhost:8000/patients`
 - Pyrefly ausführen: `uv run pyrefly check`
